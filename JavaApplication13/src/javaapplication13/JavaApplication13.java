@@ -27,6 +27,10 @@ public class JavaApplication13 {
         
         if (numero>=100 && numero<=999);
         
+        /*
+        Lector de los números del la cifra de tres digitos.
+        */
+        
         System.out.println("El numero es de tres cifras");
         
         u = numero % 10;
@@ -34,6 +38,12 @@ public class JavaApplication13 {
         c = numero/100;
         
         suma = u + d + c;
+        
+        /*
+        El string impression sirve para realizar una impresion de manera más
+        fácil y simple, pero tiene que ser declarado en un print para que se
+        muestre, además de especificar comodines si es que se usan.
+        */
         
         String impresion = """
                            Resumen
