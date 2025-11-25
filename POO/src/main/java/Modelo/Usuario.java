@@ -22,5 +22,6 @@ public abstract class Usuario {
     public String getCorreo() { return correo; }
     public String getContrasena() { return contrasena; }
     public void setContrasena(String contrasena) { this.contrasena = contrasena; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 }
 
