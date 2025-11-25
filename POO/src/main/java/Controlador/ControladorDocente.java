@@ -4,6 +4,9 @@
  */
 package Controlador;
 
+import Modelo.Curso;
+import Modelo.Docente;
+import Modelo.Estudiante;
 import java.util.List;
 
 public class ControladorDocente {
@@ -13,14 +16,14 @@ public class ControladorDocente {
         this.docente = docente;
     }
 
-    // Registrar notas de estudiantes
-    public void registrarNota(Curso curso, Estudiante estudiante, double nota) {
-        // Supón que el curso tiene un mapa de estudiante a calificaciones
-        // curso.registrarNota(estudiante, nota);
+    // Registrar nota de estudiante
+    public void registrarNota(Curso curso, Estudiante estudiante, int nota) {
+        // Aquí puedes crear un Map<Estudiante, Integer> notas en Curso para guardar las notas.
+        // ejemplo: curso.registrarNota(estudiante, nota);
     }
 
-    // Modificar notas
-    public void modificarNota(Curso curso, Estudiante estudiante, double nuevaNota) {
+    // Modificar nota previamente registrada
+    public void modificarNota(Curso curso, Estudiante estudiante, int nuevaNota) {
         // curso.modificarNota(estudiante, nuevaNota);
     }
 
@@ -29,7 +32,7 @@ public class ControladorDocente {
         // curso.registrarAsistencia(estudiante, presente);
     }
 
-    // Consultar lista de estudiantes por curso
+    // Consultar lista de estudiantes
     public List<Estudiante> consultarLista(Curso curso) {
         return curso.getEstudiantes();
     }

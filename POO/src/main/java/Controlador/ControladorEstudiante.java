@@ -4,6 +4,10 @@
  */
 package Controlador;
 
+import Modelo.Asignacion;
+import Modelo.Curso;
+import Modelo.Estudiante;
+import Modelo.Materia;
 import java.util.List;
 
 public class ControladorEstudiante {
@@ -13,62 +17,65 @@ public class ControladorEstudiante {
         this.estudiante = estudiante;
     }
 
-    // Matrículación: curso y horario sin conflicto y de la malla curricular
-    public boolean matricularCurso(Curso curso) {
-        // Verifica si la materia del curso está en la malla curricular del estudiante
-        boolean enMalla = false;
-        for (Asignacion asignacion : estudiante.getCarrera().getMalla().getAsignaciones()) {
-            if (asignacion.getMateria().getId() == curso.getMateria().getId()) {
-                enMalla = true;
-                break;
-            }
+    // Matricularse a un curso: revisa conflictos de horario y malla
+    public boolean matricularse(Curso curso) {
+        if (!esMateriaDeMalla(curso.getMateria())) {
+            System.out.println("No corresponde a la malla curricular");
+            return false;
         }
-        if (!enMalla) return false;
-
-        // Verifica conflicto de horario
-        for (Curso c : estudiante.getCursosMatriculados()) {
-            if (c.getAula().getFranjaHoraria().equals(curso.getAula().getFranjaHoraria()) &&
-                c.getAula().getHoraInicio().equals(curso.getAula().getHoraInicio())) {
-                return false; // conflicto de horario
-            }
+        if (hayConflictoHorario(curso)) {
+            System.out.println("¡Conflicto de horario!");
+            return false;
         }
-
-        // Si pasa ambos chequeos, se matricula
         estudiante.matricularCurso(curso);
         curso.agregarEstudiante(estudiante);
         return true;
     }
 
-    // Consultar registro de cursos, profesores, horarios
+    // Verificación
+    private boolean esMateriaDeMalla(Materia materia) {
+        for (Asignacion asignacion : estudiante.getCarrera().getMalla().getAsignaciones()) {
+            if (asignacion.getMateria().getId() == materia.getId()) return true;
+        }
+        return false;
+    }
+
+    // Revisa solapamiento de horario
+    private boolean hayConflictoHorario(Curso nuevoCurso) {
+        for (Curso existente : estudiante.getCursosMatriculados()) {
+            if (existente.getAula().getFranjaHoraria().equals(nuevoCurso.getAula().getFranjaHoraria())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Consultar matrícula
     public List<Curso> consultarRegistro() {
         return estudiante.getCursosMatriculados();
     }
 
-    // Consultar horario de los cursos
+    // Consultar horario
     public String consultarHorario() {
         StringBuilder sb = new StringBuilder();
-        for (Curso c : estudiante.getCursosMatriculados()) {
-            sb.append(c.getNombre())
-              .append(": ")
-              .append(c.getAula().getFranjaHoraria())
-              .append(" (")
-              .append(c.getAula().getHoraInicio())
+        for (Curso curso : estudiante.getCursosMatriculados()) {
+            sb.append(curso.getNombre())
               .append(" - ")
-              .append(c.getAula().getHoraFin())
-              .append(")\n");
+              .append(curso.getAula().getFranjaHoraria())
+              .append("\n");
         }
         return sb.toString();
     }
 
-    // Generar reporte de cursos, docente y notas
+    // Reporte de notas y docente
     public String generarReporte() {
         StringBuilder sb = new StringBuilder();
-        for (Curso c : estudiante.getCursosMatriculados()) {
-            sb.append("Curso: ").append(c.getNombre())
-              .append(", Docente: ").append(c.getDocente().getNombre())
-              .append(", Notas: ...\n"); // Aquí puedes conectar una lista de notas si lo deseas
+        for (Curso curso : estudiante.getCursosMatriculados()) {
+            sb.append("Curso: ").append(curso.getNombre())
+              .append(" | Docente: ").append(curso.getDocente().getNombre())
+              .append(" | Materia: ").append(curso.getMateria().getNombre())
+              .append("\n");
         }
         return sb.toString();
     }
 }
-
