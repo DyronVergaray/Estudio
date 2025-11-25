@@ -1,26 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
 public class Aula {
     private int id;
-    private String nombre;
-    private String franjaHoraria; // ejemplo: "Mañana" o "Tarde"
-    private String horaInicio;
-    private String horaFin;
+    private String codigo;
+    private int capacidad;
+    private String edificio;
 
-    public Aula(int id, String nombre, String franjaHoraria, String horaInicio, String horaFin) {
+    public Aula(int id, String codigo, int capacidad, String edificio) {
         this.id = id;
-        this.nombre = nombre;
-        this.franjaHoraria = franjaHoraria;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
+        this.codigo = codigo;
+        this.capacidad = capacidad;
+        this.edificio = edificio;
     }
 
     public int getId() { return id; }
-    public String getFranjaHoraria() { return franjaHoraria; }
-    public String getHoraInicio() { return horaInicio; }
-    public String getHoraFin() { return horaFin; }
+    public String getCodigo() { return codigo; }
+    public int getCapacidad() { return capacidad; }
+    public String getEdificio() { return edificio; }
+    
+    public void setCodigo(String codigo) { this.codigo = codigo; }
+    public void setCapacidad(int capacidad) { this.capacidad = capacidad; }
+    public void setEdificio(String edificio) { this.edificio = edificio; }
+    
+    @Override
+    public String toString() {
+        return codigo + " - " + edificio + " (Cap: " + capacidad + ")";
+    }
 }

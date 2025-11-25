@@ -1,19 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Docente extends Usuario {
-    private List<Curso> cursosAsignados = new ArrayList<>();
+    private String especialidad;
+    private List<Curso> cursosAsignados;
 
-    public Docente(int id, String nombre, String correo, String contrasena) {
-        super(id, nombre, correo, contrasena);
+    public Docente(int id, String nombre, String correo, String contrasena, 
+                   String telefono, String especialidad) {
+        super(id, nombre, correo, contrasena, telefono);
+        this.especialidad = especialidad;
+        this.cursosAsignados = new ArrayList<>();
     }
 
+    public String getEspecialidad() { return especialidad; }
     public List<Curso> getCursosAsignados() { return cursosAsignados; }
-    public void agregarCurso(Curso curso) { cursosAsignados.add(curso); }
+    
+    public void setEspecialidad(String especialidad) { this.especialidad = especialidad; }
+    
+    public void agregarCurso(Curso curso) {
+        this.cursosAsignados.add(curso);
+    }
+    
+    public void removerCurso(Curso curso) {
+        this.cursosAsignados.remove(curso);
+    }
 }

@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Modelo/Carrera.java
 package Modelo;
 
 public class Carrera {
@@ -9,17 +6,32 @@ public class Carrera {
     private String nombre;
     private int vacantes;
     private String descripcion;
-    private MallaCurricular malla;
+    private MallaCurricular mallaCurricular;
 
-    public Carrera(int id, String nombre, int vacantes, String descripcion, MallaCurricular malla) {
+    public Carrera(int id, String nombre, int vacantes, String descripcion, 
+                   MallaCurricular mallaCurricular) {
         this.id = id;
         this.nombre = nombre;
         this.vacantes = vacantes;
         this.descripcion = descripcion;
-        this.malla = malla;
+        this.mallaCurricular = mallaCurricular;
     }
 
     public int getId() { return id; }
     public String getNombre() { return nombre; }
-    public MallaCurricular getMalla() { return malla; }
+    public int getVacantes() { return vacantes; }
+    public String getDescripcion() { return descripcion; }
+    public MallaCurricular getMallaCurricular() { return mallaCurricular; }
+    
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setVacantes(int vacantes) { this.vacantes = vacantes; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public void setMallaCurricular(MallaCurricular mallaCurricular) { 
+        this.mallaCurricular = mallaCurricular; 
+    }
+    
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

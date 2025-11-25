@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
 import java.util.ArrayList;
@@ -9,14 +5,25 @@ import java.util.List;
 
 public class Estudiante extends Usuario {
     private Carrera carrera;
-    private List<Curso> cursosMatriculados = new ArrayList<>();
+    private int ciclo;
+    private List<Matricula> matriculas;
 
-    public Estudiante(int id, String nombre, String correo, String contrasena, Carrera carrera) {
-        super(id, nombre, correo, contrasena);
+    public Estudiante(int id, String nombre, String correo, String contrasena, 
+                      String telefono, Carrera carrera, int ciclo) {
+        super(id, nombre, correo, contrasena, telefono);
         this.carrera = carrera;
+        this.ciclo = ciclo;
+        this.matriculas = new ArrayList<>();
     }
 
     public Carrera getCarrera() { return carrera; }
-    public List<Curso> getCursosMatriculados() { return cursosMatriculados; }
-    public void matricularCurso(Curso curso) { cursosMatriculados.add(curso); }
+    public int getCiclo() { return ciclo; }
+    public List<Matricula> getMatriculas() { return matriculas; }
+    
+    public void setCarrera(Carrera carrera) { this.carrera = carrera; }
+    public void setCiclo(int ciclo) { this.ciclo = ciclo; }
+    
+    public void agregarMatricula(Matricula matricula) {
+        this.matriculas.add(matricula);
+    }
 }
