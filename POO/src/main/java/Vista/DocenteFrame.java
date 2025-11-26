@@ -233,7 +233,7 @@ public class DocenteFrame extends JFrame {
         
         JButton btnGuardar = new JButton("Guardar Cambios");
         btnGuardar.setBackground(new Color(0, 153, 76));
-        btnGuardar.setForeground(Color.WHITE);
+        btnGuardar.setForeground(Color.BLACK);
         btnGuardar.addActionListener(e -> {
             Curso cursoSeleccionado = (Curso) cmbCursos.getSelectedItem();
             if (cursoSeleccionado != null) {
@@ -396,7 +396,7 @@ public class DocenteFrame extends JFrame {
         JButton btnGenerar = new JButton("Generar Reporte del Curso");
         btnGenerar.setFont(new Font("Arial", Font.BOLD, 14));
         btnGenerar.setBackground(new Color(51, 102, 153));
-        btnGenerar.setForeground(Color.WHITE);
+        btnGenerar.setForeground(Color.BLACK);
         btnGenerar.addActionListener(e -> {
             Curso cursoSeleccionado = (Curso) cmbCursos.getSelectedItem();
             if (cursoSeleccionado != null) {

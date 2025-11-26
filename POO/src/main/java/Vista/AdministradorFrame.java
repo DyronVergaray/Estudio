@@ -32,7 +32,7 @@ public class AdministradorFrame extends JFrame {
         
         JLabel lblTitulo = new JLabel("PANEL DE ADMINISTRADOR");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setForeground(Color.BLACK);
         panelHeader.add(lblTitulo);
         
         panelPrincipal.add(panelHeader, BorderLayout.NORTH);

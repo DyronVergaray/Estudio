@@ -68,7 +68,7 @@ public class LoginFrame extends JFrame {
         btnIngresar.setBounds(145, 260, 150, 35);
         btnIngresar.setFont(new Font("Arial", Font.BOLD, 14));
         btnIngresar.setBackground(new Color(0, 102, 204));
-        btnIngresar.setForeground(Color.WHITE);
+        btnIngresar.setForeground(Color.BLACK);
         btnIngresar.setFocusPainted(false);
         btnIngresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnIngresar.addActionListener(e -> iniciarSesion());

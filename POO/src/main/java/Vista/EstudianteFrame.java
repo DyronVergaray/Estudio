@@ -33,14 +33,14 @@ public class EstudianteFrame extends JFrame {
         
         JLabel lblTitulo = new JLabel("PANEL DE ESTUDIANTE");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setForeground(Color.BLACK);
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
         
         JLabel lblInfo = new JLabel("<html><center>Estudiante: " + estudiante.getNombre() + 
                                     "<br>Carrera: " + estudiante.getCarrera().getNombre() + 
                                     " - Ciclo: " + estudiante.getCiclo() + "</center></html>");
         lblInfo.setFont(new Font("Arial", Font.PLAIN, 13));
-        lblInfo.setForeground(Color.WHITE);
+        lblInfo.setForeground(Color.BLACK);
         lblInfo.setHorizontalAlignment(SwingConstants.CENTER);
         
         panelHeader.add(lblTitulo, BorderLayout.NORTH);
@@ -150,7 +150,7 @@ public class EstudianteFrame extends JFrame {
         
         JButton btnMatricular = new JButton("Matricular Curso Seleccionado");
         btnMatricular.setBackground(new Color(0, 153, 76));
-        btnMatricular.setForeground(Color.WHITE);
+        btnMatricular.setForeground(Color.BLACK);
         btnMatricular.addActionListener(e -> {
             int fila = tabla.getSelectedRow();
             if (fila >= 0) {
