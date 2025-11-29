@@ -18,10 +18,11 @@ public class LoginFrame extends JFrame {
     }
 
     private void initComponents() {
+        // Es el cuadro del inicio de ingreso
         setTitle("Sistema de Gestión Académica - Login");
         setSize(450, 350);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
+        setResizable(false); // Evita redimensionar
 
         // Panel principal
         JPanel panelPrincipal = new JPanel();
@@ -34,7 +35,8 @@ public class LoginFrame extends JFrame {
         lblTitulo.setForeground(new Color(0, 51, 102));
         lblTitulo.setBounds(60, 30, 350, 30);
         panelPrincipal.add(lblTitulo);
-
+        
+        // Subtítulo
         JLabel lblSubtitulo = new JLabel("Universidad - Inicio de Sesión");
         lblSubtitulo.setFont(new Font("Arial", Font.PLAIN, 14));
         lblSubtitulo.setForeground(new Color(100, 100, 100));
@@ -46,7 +48,8 @@ public class LoginFrame extends JFrame {
         lblCorreo.setFont(new Font("Arial", Font.BOLD, 14));
         lblCorreo.setBounds(70, 120, 100, 25);
         panelPrincipal.add(lblCorreo);
-
+        
+        // Campo de texto para el correo
         txtCorreo = new JTextField();
         txtCorreo.setBounds(70, 145, 300, 30);
         txtCorreo.setFont(new Font("Arial", Font.PLAIN, 13));
@@ -57,7 +60,8 @@ public class LoginFrame extends JFrame {
         lblContrasena.setFont(new Font("Arial", Font.BOLD, 14));
         lblContrasena.setBounds(70, 185, 100, 25);
         panelPrincipal.add(lblContrasena);
-
+        
+        // Campo de texto para la contraseña
         txtContrasena = new JPasswordField();
         txtContrasena.setBounds(70, 210, 300, 30);
         txtContrasena.setFont(new Font("Arial", Font.PLAIN, 13));
@@ -74,32 +78,38 @@ public class LoginFrame extends JFrame {
         btnIngresar.addActionListener(e -> iniciarSesion());
         panelPrincipal.add(btnIngresar);
 
-        // Mensaje
+        // Mensaje de error o información
         lblMensaje = new JLabel("");
         lblMensaje.setFont(new Font("Arial", Font.PLAIN, 12));
         lblMensaje.setForeground(Color.RED);
         lblMensaje.setBounds(70, 295, 300, 20);
         lblMensaje.setHorizontalAlignment(SwingConstants.CENTER);
         panelPrincipal.add(lblMensaje);
-
+        
+        // Agrega el panel principal al JFrame
         add(panelPrincipal);
 
-        // Enter para login
+        // Permite iniciar sesión con Enter desde el campo de contraseña
         txtContrasena.addActionListener(e -> iniciarSesion());
     }
-
+    
+    // Método que valida e intenta iniciar sesión
     private void iniciarSesion() {
         String correo = txtCorreo.getText().trim();
         String contrasena = new String(txtContrasena.getPassword());
-
+        
+        // Verificación de campos vacíos
         if (correo.isEmpty() || contrasena.isEmpty()) {
             lblMensaje.setText("Por favor complete todos los campos");
             return;
         }
-
+        
+        // Llamada al controlador para validar credenciales
         if (controlador.iniciarSesion(correo, contrasena)) {
+            // Obtiene el tipo de usuario logueado
             String tipoUsuario = controlador.getTipoUsuarioActual();
             
+            // Según el tipo de usuario, abre la ventana correspondiente
             switch (tipoUsuario) {
                 case "ADMINISTRADOR":
                     new AdministradorFrame().setVisible(true);
@@ -112,8 +122,9 @@ public class LoginFrame extends JFrame {
                     break;
             }
             
-            dispose();
+            dispose(); // Cierra la ventana de login
         } else {
+            // Credenciales incorrectas
             lblMensaje.setText("Correo o contraseña incorrectos");
             txtContrasena.setText("");
         }
