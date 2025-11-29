@@ -8,17 +8,23 @@ import java.awt.*;
 import java.util.List;
 
 public class DocenteFrame extends JFrame {
+    // Controlador principal del sistema
     private SistemaController controlador;
+    // Docente actualmente logueado
     private Docente docente;
+    // Contenedor de pestañas
     private JTabbedPane tabbedPane;
 
     public DocenteFrame() {
         controlador = SistemaController.getInstancia();
+        // Obtiene docente actual
         docente = (Docente) controlador.getUsuarioActual();
         initComponents();
+        // Centra la ventana
         setLocationRelativeTo(null);
     }
 
+    //Inicializa todos los componentes gráficos del panel principal del docente.
     private void initComponents() {
         setTitle("Panel de Docente - " + docente.getNombre());
         setSize(900, 600);
@@ -49,7 +55,9 @@ public class DocenteFrame extends JFrame {
         
         panelPrincipal.add(panelHeader, BorderLayout.NORTH);
 
-        // Tabs
+        // ---------------------------------------------------------
+        // TABS PRINCIPALES
+        // ---------------------------------------------------------
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Mis Cursos", crearPanelMisCursos());
         tabbedPane.addTab("Estudiantes", crearPanelEstudiantes());
@@ -68,7 +76,10 @@ public class DocenteFrame extends JFrame {
 
         add(panelPrincipal);
     }
-
+    
+    // ======================================================================
+    // PANEL 1: CURSOS ASIGNADOS AL DOCENTE
+    // ======================================================================
     private JPanel crearPanelMisCursos() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -76,7 +87,8 @@ public class DocenteFrame extends JFrame {
         JLabel lblTitulo = new JLabel("MIS CURSOS ASIGNADOS");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(lblTitulo, BorderLayout.NORTH);
-
+        
+        // Tabla de cursos
         String[] columnas = {"Código", "Materia", "Aula", "Horario", "Estudiantes", "Vacantes"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
             @Override
@@ -113,6 +125,7 @@ public class DocenteFrame extends JFrame {
         return panel;
     }
 
+    //Carga los cursos asignados al docente en el modelo de tabla.
     private void cargarMisCursos(DefaultTableModel modelo) {
         modelo.setRowCount(0);
         for (Curso curso : docente.getCursosAsignados()) {
@@ -127,6 +140,9 @@ public class DocenteFrame extends JFrame {
         }
     }
 
+    // ======================================================================
+    // PANEL 2: ESTUDIANTES POR CURSO
+    // ======================================================================
     private JPanel crearPanelEstudiantes() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -164,7 +180,7 @@ public class DocenteFrame extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tabla);
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        // Listener del combo
+        // Listener para cargar estudiantes al cambiar curso
         cmbCursos.addActionListener(e -> {
             Curso cursoSeleccionado = (Curso) cmbCursos.getSelectedItem();
             if (cursoSeleccionado != null) {
@@ -180,6 +196,7 @@ public class DocenteFrame extends JFrame {
         return panel;
     }
 
+    //Llena la tabla de estudiantes del curso seleccionado.
     private void cargarEstudiantesCurso(DefaultTableModel modelo, Curso curso) {
         modelo.setRowCount(0);
         List<Matricula> matriculas = controlador.listarMatriculasPorCurso(curso);
@@ -196,6 +213,9 @@ public class DocenteFrame extends JFrame {
         }
     }
 
+    // ======================================================================
+    // PANEL 3: REGISTRO DE NOTAS
+    // ======================================================================
     private JPanel crearPanelNotas() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -269,6 +289,7 @@ public class DocenteFrame extends JFrame {
         return panel;
     }
 
+    //Llena la tabla de notas del curso seleccionado.
     private void cargarNotasCurso(DefaultTableModel modelo, Curso curso) {
         modelo.setRowCount(0);
         List<Matricula> matriculas = controlador.listarMatriculasPorCurso(curso);
@@ -285,7 +306,8 @@ public class DocenteFrame extends JFrame {
             });
         }
     }
-
+    
+    //Guarda las notas editadas en la tabla dentro de los objetos Matricula.
     private void guardarNotas(DefaultTableModel modelo, Curso curso) {
         List<Matricula> matriculas = controlador.listarMatriculasPorCurso(curso);
         
@@ -294,12 +316,14 @@ public class DocenteFrame extends JFrame {
                 if (i < matriculas.size()) {
                     Matricula m = matriculas.get(i);
                     
+                    // Extraer valores desde la tabla
                     double pc1 = Double.parseDouble(modelo.getValueAt(i, 1).toString());
                     double pc2 = Double.parseDouble(modelo.getValueAt(i, 2).toString());
                     double pc3 = Double.parseDouble(modelo.getValueAt(i, 3).toString());
                     double pcf = Double.parseDouble(modelo.getValueAt(i, 4).toString());
                     int asistencia = Integer.parseInt(modelo.getValueAt(i, 6).toString());
                     
+                    // Guardar en el objeto
                     m.setPc1(pc1);
                     m.setPc2(pc2);
                     m.setPc3(pc3);
@@ -324,6 +348,9 @@ public class DocenteFrame extends JFrame {
         }
     }
 
+    // ======================================================================
+    // PANEL 4: HORARIO DEL DOCENTE
+    // ======================================================================
     private JPanel crearPanelHorario() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -337,6 +364,7 @@ public class DocenteFrame extends JFrame {
         textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
         JScrollPane scrollPane = new JScrollPane(textArea);
 
+        // Construcción del horario tipo texto
         StringBuilder horario = new StringBuilder();
         horario.append("========================================\n");
         horario.append("       HORARIO DE DOCENTE\n");
@@ -367,6 +395,9 @@ public class DocenteFrame extends JFrame {
         return panel;
     }
 
+    // ======================================================================
+    // PANEL 5: GENERAR REPORTES
+    // ======================================================================
     private JPanel crearPanelReportes() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -419,6 +450,7 @@ public class DocenteFrame extends JFrame {
         return panel;
     }
 
+    //Muestra el reporte en un cuadro independiente tipo diálogo.
     private void mostrarReporteCurso(Curso curso) {
         String reporte = controlador.generarReporteCurso(curso);
         
@@ -433,6 +465,9 @@ public class DocenteFrame extends JFrame {
             "Reporte del Curso", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    // ============================================================
+    // Cerrar Sesión
+    // ============================================================
     private void cerrarSesion() {
         int confirmacion = JOptionPane.showConfirmDialog(this,
             "¿Está seguro de cerrar sesión?",
