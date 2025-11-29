@@ -8,14 +8,19 @@ import java.awt.*;
 import java.util.List;
 
 public class EstudianteFrame extends JFrame {
+    // Controlador principal del sistema
     private SistemaController controlador;
+    // Usuario estudiante actualmente logueado
     private Estudiante estudiante;
+    // Contenedor de pestañas (Mis cursos, Matrícula, Horario, etc.)
     private JTabbedPane tabbedPane;
 
     public EstudianteFrame() {
         controlador = SistemaController.getInstancia();
+        // Se obtiene el estudiante logueado
         estudiante = (Estudiante) controlador.getUsuarioActual();
         initComponents();
+        // Centrar en pantalla
         setLocationRelativeTo(null);
     }
 
@@ -31,11 +36,13 @@ public class EstudianteFrame extends JFrame {
         panelHeader.setBackground(new Color(0, 102, 51));
         panelHeader.setPreferredSize(new Dimension(900, 80));
         
+        // Título superior
         JLabel lblTitulo = new JLabel("PANEL DE ESTUDIANTE");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
         lblTitulo.setForeground(Color.BLACK);
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
         
+        // Información del estudiante
         JLabel lblInfo = new JLabel("<html><center>Estudiante: " + estudiante.getNombre() + 
                                     "<br>Carrera: " + estudiante.getCarrera().getNombre() + 
                                     " - Ciclo: " + estudiante.getCiclo() + "</center></html>");
@@ -48,7 +55,7 @@ public class EstudianteFrame extends JFrame {
         
         panelPrincipal.add(panelHeader, BorderLayout.NORTH);
 
-        // Tabs
+        // ================== PESTAÑAS =====================
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Mis Cursos", crearPanelMisCursos());
         tabbedPane.addTab("Matrícular Curso", crearPanelMatricular());
@@ -67,6 +74,9 @@ public class EstudianteFrame extends JFrame {
         add(panelPrincipal);
     }
 
+    // ============================================================
+    // PANEL: Mis Cursos
+    // ============================================================
     private JPanel crearPanelMisCursos() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -74,7 +84,8 @@ public class EstudianteFrame extends JFrame {
         JLabel lblTitulo = new JLabel("MIS CURSOS MATRICULADOS");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(lblTitulo, BorderLayout.NORTH);
-
+        
+        // Tabla de cursos
         String[] columnas = {"Código", "Materia", "Docente", "Aula", "Horario", "Créditos"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
             @Override
@@ -86,7 +97,8 @@ public class EstudianteFrame extends JFrame {
         JTable tabla = new JTable(modelo);
         tabla.setRowHeight(25);
         JScrollPane scrollPane = new JScrollPane(tabla);
-
+        
+        // Cargar cursos del estudiante
         cargarMisCursos(modelo);
 
         // Panel de información
@@ -112,6 +124,7 @@ public class EstudianteFrame extends JFrame {
     }
 
     private void cargarMisCursos(DefaultTableModel modelo) {
+        // limpiar tabla
         modelo.setRowCount(0);
         for (Matricula m : estudiante.getMatriculas()) {
             Curso curso = m.getCurso();
@@ -126,6 +139,9 @@ public class EstudianteFrame extends JFrame {
         }
     }
 
+    // ============================================================
+    // PANEL: Matrícula
+    // ============================================================
     private JPanel crearPanelMatricular() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -133,7 +149,8 @@ public class EstudianteFrame extends JFrame {
         JLabel lblTitulo = new JLabel("CURSOS DISPONIBLES PARA MATRÍCULA");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(lblTitulo, BorderLayout.NORTH);
-
+        
+        // Tabla de cursos disponibles
         String[] columnas = {"Código", "Materia", "Docente", "Horario", "Vacantes", "Disponibles"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
             @Override
@@ -145,12 +162,14 @@ public class EstudianteFrame extends JFrame {
         JTable tabla = new JTable(modelo);
         tabla.setRowHeight(25);
         JScrollPane scrollPane = new JScrollPane(tabla);
-
+        // Botones de acción
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT));
         
         JButton btnMatricular = new JButton("Matricular Curso Seleccionado");
         btnMatricular.setBackground(new Color(0, 153, 76));
         btnMatricular.setForeground(Color.BLACK);
+        
+        // Acción: matricular curso
         btnMatricular.addActionListener(e -> {
             int fila = tabla.getSelectedRow();
             if (fila >= 0) {
@@ -169,7 +188,8 @@ public class EstudianteFrame extends JFrame {
 
         panel.add(panelBotones, BorderLayout.SOUTH);
         panel.add(scrollPane, BorderLayout.CENTER);
-
+        
+        // Cargar cursos inicialmente
         cargarCursosDisponibles(modelo);
 
         return panel;
@@ -191,11 +211,13 @@ public class EstudianteFrame extends JFrame {
             });
         }
     }
-
+    
+    // Acción: matricular un curso
     private void matricularCurso(String codigo, DefaultTableModel modelo) {
         List<Curso> cursos = controlador.listarCursos();
         Curso cursoSeleccionado = null;
         
+        // Se busca el curso por código
         for (Curso c : cursos) {
             if (c.getCodigo().equals(codigo)) {
                 cursoSeleccionado = c;
@@ -238,6 +260,9 @@ public class EstudianteFrame extends JFrame {
         }
     }
 
+    // ============================================================
+    // PANEL: Horario de clases
+    // ============================================================
     private JPanel crearPanelHorario() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -251,6 +276,7 @@ public class EstudianteFrame extends JFrame {
         textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
         JScrollPane scrollPane = new JScrollPane(textArea);
 
+        // Construcción del horario textual
         StringBuilder horario = new StringBuilder();
         horario.append("========================================\n");
         horario.append("       HORARIO DE CLASES - ").append(estudiante.getCarrera().getNombre()).append("\n");
@@ -292,6 +318,9 @@ public class EstudianteFrame extends JFrame {
         return panel;
     }
 
+    // ============================================================
+    // PANEL: Notas del estudiante
+    // ============================================================
     private JPanel crearPanelNotas() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -372,6 +401,9 @@ public class EstudianteFrame extends JFrame {
         }
     }
 
+    // ============================================================
+    // Cerrar Sesión
+    // ============================================================
     private void cerrarSesion() {
         int confirmacion = JOptionPane.showConfirmDialog(this,
             "¿Está seguro de cerrar sesión?",
@@ -381,6 +413,7 @@ public class EstudianteFrame extends JFrame {
         if (confirmacion == JOptionPane.YES_OPTION) {
             controlador.cerrarSesion();
             new LoginFrame().setVisible(true);
+            // Cierra ventana actual
             dispose();
         }
     }
