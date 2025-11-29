@@ -17,6 +17,7 @@ public class AdministradorFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    //Inicializa y construye los elementos visuales de la interfaz.
     private void initComponents() {
         setTitle("Panel de Administrador - " + controlador.getUsuarioActual().getNombre());
         setSize(900, 600);
@@ -58,6 +59,9 @@ public class AdministradorFrame extends JFrame {
         add(panelPrincipal);
     }
 
+    // =============================================================
+    //                       GESTIÓN ESTUDIANTES
+    // =============================================================
     private JPanel crearPanelEstudiantes() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -94,18 +98,22 @@ public class AdministradorFrame extends JFrame {
         JButton btnActualizar = new JButton("Actualizar Lista");
         btnActualizar.addActionListener(e -> cargarEstudiantes(modelo));
 
+        // Se agregan los botones al panel
         panelBotones.add(btnAgregar);
         panelBotones.add(btnEliminar);
         panelBotones.add(btnActualizar);
 
+        // Se agregan componentes al panel principal
         panel.add(panelBotones, BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
 
+        // Cargar datos iniciales
         cargarEstudiantes(modelo);
 
         return panel;
     }
 
+    //Carga la lista de estudiantes en la tabla.
     private void cargarEstudiantes(DefaultTableModel modelo) {
         modelo.setRowCount(0);
         List<Estudiante> estudiantes = controlador.listarEstudiantes();
@@ -120,7 +128,9 @@ public class AdministradorFrame extends JFrame {
         }
     }
 
+    //Abre una ventana de diálogo para registrar un nuevo estudiante.
     private void agregarEstudiante(DefaultTableModel modelo) {
+        // Campos del formulario
         JTextField txtNombre = new JTextField();
         JTextField txtCorreo = new JTextField();
         JPasswordField txtContrasena = new JPasswordField();
@@ -128,10 +138,12 @@ public class AdministradorFrame extends JFrame {
         JComboBox<Carrera> cmbCarrera = new JComboBox<>();
         JTextField txtCiclo = new JTextField();
 
+        // Se agregan las carreras disponibles
         for (Carrera c : controlador.listarCarreras()) {
             cmbCarrera.addItem(c);
         }
 
+        // Arreglo que muestra los campos en JOptionPane
         Object[] mensaje = {
             "Nombre:", txtNombre,
             "Correo:", txtCorreo,
@@ -146,6 +158,7 @@ public class AdministradorFrame extends JFrame {
 
         if (opcion == JOptionPane.OK_OPTION) {
             try {
+                // Se obtiene y valida la información ingresada
                 String nombre = txtNombre.getText().trim();
                 String correo = txtCorreo.getText().trim();
                 String contrasena = new String(txtContrasena.getPassword());
@@ -158,6 +171,7 @@ public class AdministradorFrame extends JFrame {
                     return;
                 }
 
+                // Intento de registro
                 if (controlador.registrarEstudiante(nombre, correo, contrasena, 
                                                     telefono, carrera, ciclo)) {
                     cargarEstudiantes(modelo);
@@ -171,6 +185,9 @@ public class AdministradorFrame extends JFrame {
         }
     }
 
+    // =============================================================
+    //                       GESTIÓN DOCENTES
+    // =============================================================
     private JPanel crearPanelDocentes() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -217,6 +234,7 @@ public class AdministradorFrame extends JFrame {
         return panel;
     }
 
+    //Carga todos los docentes en la tabla.
     private void cargarDocentes(DefaultTableModel modelo) {
         modelo.setRowCount(0);
         List<Docente> docentes = controlador.listarDocentes();
@@ -231,6 +249,7 @@ public class AdministradorFrame extends JFrame {
         }
     }
 
+    //Dialogo para registrar un docente.
     private void agregarDocente(DefaultTableModel modelo) {
         JTextField txtNombre = new JTextField();
         JTextField txtCorreo = new JTextField();
@@ -271,6 +290,9 @@ public class AdministradorFrame extends JFrame {
         }
     }
 
+    // =============================================================
+    //                       GESTIÓN CURSOS
+    // =============================================================
     private JPanel crearPanelCursos() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -304,6 +326,7 @@ public class AdministradorFrame extends JFrame {
         return panel;
     }
 
+    //Carga los cursos existentes en la tabla.
     private void cargarCursos(DefaultTableModel modelo) {
         modelo.setRowCount(0);
         List<Curso> cursos = controlador.listarCursos();
@@ -320,6 +343,7 @@ public class AdministradorFrame extends JFrame {
         }
     }
 
+    //Formulario para crear un curso.
     private void crearCurso(DefaultTableModel modelo) {
         JTextField txtCodigo = new JTextField();
         JComboBox<Materia> cmbMateria = new JComboBox<>();
@@ -367,6 +391,9 @@ public class AdministradorFrame extends JFrame {
         }
     }
 
+    // =============================================================
+    //                       GESTIÓN CARRERAS
+    // =============================================================
     private JPanel crearPanelCarreras() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -410,6 +437,9 @@ public class AdministradorFrame extends JFrame {
         }
     }
 
+    // =============================================================
+    //                       GESTIÓN AULAS
+    // =============================================================
     private JPanel crearPanelAulas() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -485,6 +515,9 @@ public class AdministradorFrame extends JFrame {
         }
     }
 
+    // =============================================================
+    //                       GESTIÓN MATERIAS
+    // =============================================================
     private JPanel crearPanelMaterias() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -556,6 +589,9 @@ public class AdministradorFrame extends JFrame {
         }
     }
 
+    // =============================================================
+    //                       CERRAR SESIÓN
+    // =============================================================
     private void cerrarSesion() {
         int confirmacion = JOptionPane.showConfirmDialog(this,
             "¿Está seguro de cerrar sesión?",
